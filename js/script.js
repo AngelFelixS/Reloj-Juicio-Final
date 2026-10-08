@@ -31,6 +31,21 @@ const hora_sidney=document.getElementById("hora-sidney")
 // PUNTO 1: EDAD EN COSAS RARAS
 // ==================================================
 
+function contarViernes13(fecha,ahora){
+  let contador=0
+
+  for (let anio=fecha.year(); anio<=ahora.year(); anio++) {
+    for (let mes=0; mes<12; mes++) {
+      const dia13 = dayjs(anio+"-"+mes+"-13");
+      if (dia13.format("dddd")==="viernes" && !dia13.isBefore(fecha, "day") && !dia13.isAfter(ahora, "day")) {
+        contador++;
+      }
+    }
+  }
+
+  return contador;
+}
+
 form_edad.addEventListener("submit",(evento)=>{
   evento.preventDefault()
   const ahora=dayjs()
@@ -40,7 +55,7 @@ form_edad.addEventListener("submit",(evento)=>{
     horas_edad.textContent=ahora.diff(fecha_nacimiento,"hour")
     segundos_edad.textContent=ahora.diff(fecha_nacimiento,"second")
     dia_semana.textContent=fecha_nacimiento.format("dddd")
-    viernes.textContent="???"
+    viernes.textContent=contarViernes13(fecha_nacimiento,ahora)
 
     resultado_edad.hidden=false
     error_edad.hidden=true
